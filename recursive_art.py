@@ -1,6 +1,7 @@
 """ TODO: Put your header comment here """
 
 import random
+import math
 from PIL import Image
 
 
@@ -14,9 +15,50 @@ def build_random_function(min_depth, max_depth):
         returns: the randomly generated function represented as a nested list
                  (see assignment writeup for details on the representation of
                  these functions)
+
+        The base functions that are used are:
+                * "x" - take the x position
+                * "y" - take the y position
+                * "prod" - take the product of two things
+                * "avg" - take the average of two things
+                * "cos_pi" - take the cosine of a thing times pi
+                * "sin_pi" - take the sine of a thing times pi
+                * "sqr" - square a thing
+                * "abs" - take the aboslute value of a thing
     """
-    # TODO: implement this
-    pass
+    if min_depth>max_depth:
+        max_depth = min_depth
+    if min_depth ==0: #Checks if we've recursed enough
+        if max_depth == 0 or random.randint(0,1) == 0:
+            """ Checks if it's hit the bottom of the recursion
+                If we haven't, there's a 50/50 chance that it stops.
+            """
+            func = random.randint(0,1)
+        else:
+            func = random.randint(2,7)
+            min_depth = 1
+    else:
+        func = random.randint(2,7)
+
+
+    if func == 0: #x
+        random_function = ["x"]
+    elif func == 1: # Y
+        random_function = ["y"]
+    elif func == 2: # Product
+        random_function = ["prod",build_random_function(min_depth-1, max_depth-1),build_random_function(min_depth-1, max_depth-1)]
+    elif func ==3: # Average
+        random_function = ["avg", build_random_function(min_depth-1, max_depth-1),build_random_function(min_depth-1, max_depth-1)]
+    elif func ==4: # Cosin Pi
+        random_function = ["cos_pi", build_random_function(min_depth-1, max_depth-1)]
+    elif func ==5:  # sine pi
+        random_function = ["sin_pi", build_random_function(min_depth-1, max_depth-1)]
+    elif func == 6: #cube
+        random_function = ["cube", build_random_function(min_depth-1, max_depth-1)]
+    elif func ==7: # Arctan
+        random_function = ["atan", build_random_function(min_depth-1, max_depth-1)]
+    # print(random_function)
+    return random_function
 
 
 def evaluate_random_function(f, x, y):
@@ -33,10 +75,31 @@ def evaluate_random_function(f, x, y):
         >>> evaluate_random_function(["y"],0.1,0.02)
         0.02
     """
-    if f == ["x"]:
+    func=f[0]
+    if func == "x":
         return x;
-    elif f == ["y"]:
+    elif func == "y":
         return y
+    elif func == "prod":
+        a=evaluate_random_function(f[1],x,y)
+        b=evaluate_random_function(f[2],x,y)
+        return a*b
+    elif func == "avg":
+        a=evaluate_random_function(f[1],x,y)
+        b=evaluate_random_function(f[2],x,y)
+        return 0.5*(a+b)
+    elif func == "cos_pi":
+        a=evaluate_random_function(f[1],x,y)
+        return math.cos(3.14159 * a)
+    elif func == "sin_pi":
+        a=evaluate_random_function(f[1],x,y)
+        return math.sin(3.14159 * a)
+    elif func == "cube":
+        a=evaluate_random_function(f[1],x,y)
+        return a*a*a
+    elif func == "atan":
+        a=evaluate_random_function(f[1],x,y)
+        return math.atan(a)
     else:
         return 0
     pass
@@ -122,9 +185,9 @@ def generate_art(filename, x_size=350, y_size=350):
         x_size, y_size: optional args to set image dimensions (default: 350)
     """
     # Functions for red, green, and blue channels - where the magic happens!
-    red_function = ["x"]
-    green_function = ["y"]
-    blue_function = ["x"]
+    red_function = build_random_function(7,15)
+    green_function = build_random_function(7,15)
+    blue_function = build_random_function(7,15)
 
     # Create image and loop over all pixels
     im = Image.new("RGB", (x_size, y_size))
@@ -140,6 +203,9 @@ def generate_art(filename, x_size=350, y_size=350):
                     )
 
     im.save(filename)
+    print("red function = ", red_function)
+    print("blue function = ", blue_function)
+    print("green function = ", green_function)
 
 
 if __name__ == '__main__':
@@ -150,7 +216,6 @@ if __name__ == '__main__':
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
     generate_art("myart.png")
-    
 
     # Test that PIL is installed correctly
     # DONE: Comment or remove this function call after testing PIL install

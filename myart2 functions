@@ -1,0 +1,3 @@
+red function =  ['cube', ['prod', ['cos_pi', ['atan', ['atan', ['cos_pi', ['prod', ['x'], ['sin_pi', ['x']]]]]]], ['sin_pi', ['cube', ['cos_pi', ['prod', ['sin_pi', ['x']], ['sin_pi', ['y']]]]]]]]
+blue function =  ['sin_pi', ['sin_pi', ['sin_pi', ['atan', ['cos_pi', ['atan', ['cos_pi', ['y']]]]]]]]
+green function =  ['avg', ['atan', ['sin_pi', ['sin_pi', ['cos_pi', ['avg', ['cube', ['prod', ['x'], ['y']]], ['cube', ['avg', ['x'], ['y']]]]]]]], ['sin_pi', ['atan', ['atan', ['prod', ['sin_pi', ['atan', ['atan', ['cube', ['y']]]]], ['cube', ['prod', ['avg', ['avg', ['y'], ['y']], ['x']], ['avg', ['y'], ['atan', ['x']]]]]]]]]]
