@@ -33,7 +33,12 @@ def evaluate_random_function(f, x, y):
         >>> evaluate_random_function(["y"],0.1,0.02)
         0.02
     """
-    # TODO: implement this
+    if f == ["x"]:
+        return x;
+    elif f == ["y"]:
+        return y
+    else:
+        return 0
     pass
 
 
@@ -64,8 +69,9 @@ def remap_interval(val,
         >>> remap_interval(5, 4, 6, 1, 2)
         1.5
     """
-    # TODO: implement this
-    pass
+    scaling = (val - input_interval_start)/(input_interval_end-input_interval_start)
+    remapped_val = scaling * (output_interval_end - output_interval_start) + output_interval_start
+    return remapped_val
 
 
 def color_map(val):
@@ -96,13 +102,13 @@ def test_image(filename, x_size=350, y_size=350):
         x_size, y_size: optional args to set image dimensions (default: 350)
     """
     # Create image and loop over all pixels
-    im = Image.new("RGB", (x_size, y_size))
-    pixels = im.load()
-    for i in range(x_size):
-        for j in range(y_size):
-            x = remap_interval(i, 0, x_size, -1, 1)
+    im = Image.new("RGB", (x_size, y_size))  #Create a new image of a certain size
+    pixels = im.load()  #Give us access to the pixels
+    for i in range(x_size):  #Loops through columns
+        for j in range(y_size):  # Loops through pixels in the given column
+            x = remap_interval(i, 0, x_size, -1, 1)  #Transforms the pixel grid to a graph from -1 to +1
             y = remap_interval(j, 0, y_size, -1, 1)
-            pixels[i, j] = (random.randint(0, 255),  # Red channel
+            pixels[i, j] = (random.randint(0, 255),  # Red channel  #Picks a random number
                             random.randint(0, 255),  # Green channel
                             random.randint(0, 255))  # Blue channel
 
@@ -143,8 +149,9 @@ if __name__ == '__main__':
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    # generate_art("myart.png")
+    generate_art("myart.png")
+    
 
     # Test that PIL is installed correctly
-    # TODO: Comment or remove this function call after testing PIL install
-    test_image("noise.png")
+    # DONE: Comment or remove this function call after testing PIL install
+    # test_image("noise.png")
